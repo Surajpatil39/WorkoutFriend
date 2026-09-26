@@ -1,0 +1,381 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --wb-bg: #0a0a0a;
+  --wb-surface: #111111;
+  --wb-surface-raised: #161616;
+  --wb-border: #1e1e1e;
+  --wb-border-strong: #303030;
+  --wb-text: #ffffff;
+  --wb-muted: #888888;
+  --wb-dim: #555555;
+  --wb-lime: #c8ff00;
+  --wb-lime-bright: #d4ff33;
+  --wb-red: #ff3333;
+  --wb-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --wb-mono: 'Space Mono', 'Courier New', monospace;
+}
+
+body {
+  margin: 0;
+  background: var(--wb-bg);
+}
+
+.wb-app,
+.wb-auth,
+.wb-admin,
+.wb-loading {
+  min-height: 100vh;
+  background: var(--wb-bg);
+  color: var(--wb-text);
+  font-family: var(--wb-font);
+}
+
+.wb-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--wb-text);
+  text-decoration: none;
+}
+
+.wb-brand-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  background: var(--wb-lime);
+  color: #000;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .5px;
+}
+
+.wb-brand-copy,
+.wb-eyebrow,
+.wb-tab,
+.wb-meta,
+.wb-auth label,
+.wb-admin .text-sm.uppercase {
+  font-family: var(--wb-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.wb-brand-copy { font-size: 12px; color: var(--wb-text); }
+
+.wb-app-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 65px;
+  padding: 0 max(24px, calc((100vw - 1200px) / 2 + 24px));
+  background: rgba(10, 10, 10, .9);
+  border-bottom: 1px solid var(--wb-border);
+  backdrop-filter: blur(18px);
+}
+
+.wb-header-actions { display: flex; align-items: center; gap: 10px; }
+
+.wb-user-button,
+.wb-header-button,
+.wb-logout-button,
+.wb-tab,
+.wb-primary-action,
+.wb-secondary-action {
+  border: 1px solid var(--wb-border-strong);
+  border-radius: 0;
+  font-family: var(--wb-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .15s ease;
+}
+
+.wb-user-button,
+.wb-header-button,
+.wb-logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  background: var(--wb-surface);
+  color: var(--wb-muted);
+}
+
+.wb-user-button:hover,
+.wb-header-button:hover,
+.wb-logout-button:hover { color: var(--wb-text); border-color: var(--wb-muted); }
+.wb-logout-button:hover { color: #ff6b6b; border-color: #ff3333; }
+
+.wb-user-initial {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--wb-lime);
+  color: #000;
+  font-family: var(--wb-font);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.wb-main {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 62px 24px 96px;
+}
+
+.wb-dashboard-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.wb-eyebrow { margin: 0 0 12px; color: var(--wb-lime); }
+
+.wb-dashboard-title,
+.wb-auth-title,
+.wb-admin-title {
+  margin: 0;
+  color: var(--wb-text);
+  font-size: clamp(34px, 5vw, 62px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: .94;
+  text-transform: uppercase;
+}
+
+.wb-dashboard-title span,
+.wb-auth-title span,
+.wb-admin-title span { color: var(--wb-lime); }
+
+.wb-dashboard-copy {
+  max-width: 360px;
+  margin: 0;
+  color: var(--wb-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.wb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 30px 0;
+}
+
+.wb-tab { padding: 12px 16px; background: transparent; color: var(--wb-muted); cursor: pointer; }
+.wb-tab:hover { color: var(--wb-text); border-color: var(--wb-muted); }
+.wb-tab.is-active { background: var(--wb-lime); border-color: var(--wb-lime); color: #000; }
+
+.wb-panel-content { width: 100%; }
+
+/* Translate the existing feature components into the shared dark industrial system. */
+.wb-app .bg-slate-900 { background-color: var(--wb-bg) !important; }
+.wb-app .bg-slate-800,
+.wb-app .bg-slate-800\/50 { background-color: var(--wb-surface) !important; }
+.wb-app .bg-slate-700 { background-color: var(--wb-surface-raised) !important; }
+.wb-app .border-slate-700,
+.wb-app .border-slate-600 { border-color: var(--wb-border) !important; }
+.wb-app .border-yellow-400 { border-color: var(--wb-lime) !important; }
+.wb-app .text-yellow-400 { color: var(--wb-lime) !important; }
+.wb-app .bg-yellow-400 { background-color: var(--wb-lime) !important; }
+.wb-app .text-slate-300 { color: #c8c8c8 !important; }
+.wb-app .text-slate-400 { color: var(--wb-muted) !important; }
+.wb-app .text-slate-500,
+.wb-app .text-slate-600 { color: var(--wb-dim) !important; }
+.wb-app .rounded-3xl,
+.wb-app .rounded-2xl,
+.wb-app .rounded-xl,
+.wb-app .rounded-lg,
+.wb-app .rounded-full { border-radius: 0 !important; }
+.wb-app img.rounded-full { border-radius: 50% !important; }
+.wb-app .shadow-xl,
+.wb-app .shadow-2xl,
+.wb-app .shadow-lg { box-shadow: none !important; }
+
+.wb-app input,
+.wb-app select,
+.wb-app textarea {
+  border-radius: 0 !important;
+  border-color: var(--wb-border) !important;
+  background: var(--wb-bg) !important;
+  color: var(--wb-text) !important;
+}
+
+.wb-app input:focus,
+.wb-app select:focus,
+.wb-app textarea:focus { border-color: var(--wb-lime) !important; box-shadow: 0 0 0 1px var(--wb-lime); }
+
+.wb-app button.bg-yellow-400,
+.wb-primary-action {
+  background: var(--wb-lime) !important;
+  border-color: var(--wb-lime) !important;
+  color: #000 !important;
+}
+
+.wb-app button.bg-yellow-400:hover,
+.wb-primary-action:hover { background: var(--wb-lime-bright) !important; border-color: var(--wb-lime-bright) !important; }
+.wb-app button:active,
+.wb-primary-action:active { transform: scale(.98); }
+.wb-app h3.text-yellow-400 { font-family: var(--wb-mono); font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; }
+.wb-app .group:hover { border-color: var(--wb-lime) !important; }
+
+.nutrition-photo-card { overflow: hidden; }
+.nutrition-photo-heading,
+.nutrition-analysis-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.nutrition-photo-kicker { margin: 0 0 8px; color: var(--wb-lime); font: 700 10px var(--wb-mono); letter-spacing: 1.4px; text-transform: uppercase; }
+.nutrition-photo-note,
+.nutrition-analysis-header > span { color: var(--wb-muted); font: 700 10px var(--wb-mono); letter-spacing: 1.2px; text-transform: uppercase; }
+.nutrition-photo-grid { display: grid; grid-template-columns: minmax(190px, .9fr) minmax(260px, 1.1fr); gap: 22px; margin-top: 22px; }
+.nutrition-photo-dropzone,
+.nutrition-photo-preview { position: relative; display: flex; min-height: 190px; flex-direction: column; align-items: center; justify-content: center; gap: 9px; border: 1px dashed var(--wb-border-strong); background: var(--wb-bg); color: var(--wb-muted); cursor: pointer; text-align: center; }
+.nutrition-photo-dropzone:hover { border-color: var(--wb-lime); color: var(--wb-text); }
+.nutrition-photo-dropzone strong { color: var(--wb-text); font-size: 13px; }
+.nutrition-photo-dropzone span:last-of-type { font: 10px var(--wb-mono); letter-spacing: .5px; }
+.nutrition-photo-icon { color: var(--wb-lime); font-size: 32px; line-height: 1; }
+.nutrition-photo-preview { display: block; border-style: solid; overflow: hidden; }
+.nutrition-photo-preview img { width: 100%; height: 190px; object-fit: cover; }
+.nutrition-photo-remove { position: absolute; top: 10px; right: 10px; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid var(--wb-border-strong); border-radius: 50% !important; background: rgba(10, 10, 10, .85); color: var(--wb-text); font-size: 20px; line-height: 1; }
+.nutrition-photo-actions { display: flex; flex-direction: column; }
+.nutrition-photo-label,
+.nutrition-analysis-item label > span { margin-bottom: 7px; color: var(--wb-muted); font: 700 10px var(--wb-mono); letter-spacing: 1px; text-transform: uppercase; }
+.nutrition-photo-label span { color: var(--wb-dim); }
+.nutrition-photo-textarea { min-height: 94px; padding: 12px !important; resize: vertical; }
+.nutrition-photo-analyze,
+.nutrition-analysis-save { margin-top: 12px; padding: 14px; border: 1px solid var(--wb-lime); border-radius: 0 !important; font: 700 11px var(--wb-mono); letter-spacing: 1.3px; text-transform: uppercase; }
+.nutrition-photo-analyze:disabled,
+.nutrition-analysis-save:disabled { cursor: not-allowed; opacity: .5; }
+.nutrition-photo-disclaimer { margin: 11px 0 0; color: var(--wb-dim); font-size: 11px; line-height: 1.45; }
+.nutrition-photo-error { margin: 16px 0 0; color: #ff6b6b; font-size: 12px; }
+.nutrition-analysis-review { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--wb-border); }
+.nutrition-analysis-header h4 { margin: 0; font-size: 18px; font-weight: 800; }
+.nutrition-analysis-items { display: grid; gap: 10px; margin-top: 18px; }
+.nutrition-analysis-item { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr); gap: 14px; padding: 16px; border: 1px solid var(--wb-border); background: var(--wb-bg); }
+.nutrition-analysis-main,
+.nutrition-analysis-macros { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.nutrition-analysis-item label { display: flex; min-width: 0; flex-direction: column; }
+.nutrition-analysis-item input { width: 100%; box-sizing: border-box; padding: 7px 0 !important; font-size: 13px; }
+.nutrition-analysis-macros { grid-template-columns: repeat(4, 1fr); }
+.nutrition-analysis-macros input { text-align: right; }
+.nutrition-confidence { position: absolute; right: 16px; bottom: 6px; color: var(--wb-dim); font: 700 9px var(--wb-mono); letter-spacing: .8px; text-transform: uppercase; }
+.nutrition-confidence.is-high { color: var(--wb-lime); }
+.nutrition-confidence.is-medium { color: #d9d9d9; }
+.nutrition-analysis-notes { margin: 15px 0 0; color: var(--wb-muted); font-size: 12px; line-height: 1.5; }
+.nutrition-analysis-save { width: 100%; margin-top: 18px; }
+
+.wb-auth {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: minmax(260px, .8fr) minmax(420px, 1fr);
+}
+
+.wb-auth-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  border-right: 1px solid var(--wb-border);
+  background: linear-gradient(145deg, #121212 0%, #0a0a0a 72%);
+}
+
+.wb-auth-aside-copy { max-width: 385px; margin: auto 0; }
+.wb-auth-aside-heading { margin: 0 0 20px; font-size: clamp(42px, 5vw, 76px); font-weight: 900; letter-spacing: -3px; line-height: .88; text-transform: uppercase; }
+.wb-auth-aside-heading span { color: var(--wb-lime); }
+.wb-auth-aside-copy p { color: var(--wb-muted); font-size: 14px; line-height: 1.7; }
+.wb-auth-aside-footer { color: var(--wb-dim); font-family: var(--wb-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+.wb-auth-main { display: grid; place-items: center; padding: 40px 24px; }
+.wb-auth-panel { width: min(430px, 100%); }
+.wb-auth-topline { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+.wb-auth-topline .wb-meta { color: var(--wb-muted); }
+.wb-auth-title { font-size: clamp(38px, 4vw, 54px); margin-bottom: 14px; }
+.wb-auth-subtitle { margin: 0 0 34px; color: var(--wb-muted); line-height: 1.65; }
+.wb-auth-form { display: grid; gap: 18px; }
+.wb-auth-field { display: grid; gap: 8px; color: var(--wb-muted); }
+.wb-auth-field input,
+.wb-auth-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 0;
+  appearance: none;
+  border: 0;
+  border-bottom: 1px solid var(--wb-border-strong);
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--wb-text);
+  font: 500 15px var(--wb-font);
+}
+.wb-auth-field input:focus,
+.wb-auth-field select:focus { border-color: var(--wb-lime); }
+.wb-auth-field select option { background: var(--wb-surface); }
+.wb-primary-action { width: 100%; margin-top: 12px; padding: 16px; cursor: pointer; }
+.wb-primary-action:disabled { cursor: not-allowed; opacity: .5; }
+.wb-auth-error { margin: 0; color: #ff6b6b; font-size: 13px; }
+.wb-auth-switch { margin: 26px 0 0; color: var(--wb-muted); font-size: 13px; }
+.wb-auth-switch button { margin-left: 8px; padding: 0; border: 0; background: none; color: var(--wb-lime); cursor: pointer; font: 700 12px var(--wb-mono); letter-spacing: 1px; text-transform: uppercase; }
+
+.wb-admin { padding: 0 24px 80px; }
+.wb-admin-inner { width: min(1200px, 100%); margin: 0 auto; }
+.wb-admin-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 64px 0 36px; border-bottom: 1px solid var(--wb-border); }
+.wb-admin-head p { max-width: 350px; margin: 0; color: var(--wb-muted); font-size: 14px; line-height: 1.65; }
+.wb-admin .bg-blue-500,
+.wb-admin .bg-green-500,
+.wb-admin .bg-purple-500 { background: var(--wb-surface) !important; }
+.wb-admin .rounded-3xl,
+.wb-admin .rounded-xl { border-radius: 0 !important; }
+.wb-admin .border-slate-700 { border-color: var(--wb-border) !important; }
+.wb-admin .bg-slate-800 { background: var(--wb-surface) !important; }
+.wb-admin .bg-slate-900 { background: var(--wb-bg) !important; }
+.wb-admin .text-yellow-400 { color: var(--wb-lime) !important; }
+.wb-admin .text-slate-400 { color: var(--wb-muted) !important; }
+.wb-admin .shadow-xl { box-shadow: none !important; }
+.wb-admin .wb-stat-card { border: 1px solid var(--wb-border); border-top: 3px solid var(--wb-lime); }
+.wb-admin .wb-stat-card:nth-child(2) { border-top-color: #fff; }
+.wb-admin .wb-stat-card:nth-child(3) { border-top-color: var(--wb-red); }
+
+.wb-loading { display: grid; place-items: center; color: var(--wb-muted); font-family: var(--wb-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+@media (max-width: 800px) {
+  .wb-app-header { padding: 12px 18px; }
+  .wb-brand-copy { display: none; }
+  .wb-user-button span:not(.wb-user-initial) { display: none; }
+  .wb-main { padding: 42px 18px 72px; }
+  .wb-dashboard-intro,
+  .wb-admin-head { align-items: flex-start; flex-direction: column; }
+  .wb-auth { grid-template-columns: 1fr; }
+  .wb-auth-aside { min-height: 240px; padding: 24px; border-right: 0; border-bottom: 1px solid var(--wb-border); }
+  .wb-auth-aside-copy { margin: 36px 0 0; }
+  .wb-auth-aside-heading { font-size: 46px; }
+  .wb-auth-aside-footer { display: none; }
+  .nutrition-photo-grid,
+  .nutrition-analysis-item { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 500px) {
+  .wb-header-actions { gap: 6px; }
+  .wb-header-button,
+  .wb-logout-button,
+  .wb-user-button { padding: 9px; }
+  .wb-header-button { display: none; }
+  .wb-tabs { gap: 6px; }
+  .wb-tab { flex: 1 1 calc(50% - 6px); padding: 12px 8px; }
+  .nutrition-photo-heading,
+  .nutrition-analysis-header { flex-direction: column; }
+  .nutrition-analysis-main { grid-template-columns: 1fr; }
+  .nutrition-analysis-macros { grid-template-columns: repeat(2, 1fr); }
+  .nutrition-confidence { position: static; margin-top: 4px; }
+}
