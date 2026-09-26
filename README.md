@@ -1,84 +1,58 @@
-# Workout Buddy
+# Workout Friend 💪
 
-A full-stack fitness companion application that combines workout tracking, AI-powered food photography nutrition analysis, trainer booking, a community social feed, and an admin panel — all in one platform.
+Workout tracking + AI food photo analysis + trainer booking + a little community feed + an admin panel. Basically I wanted one app that covers most of the "fitness app" checklist instead of juggling five different ones.
 
-## Tech Stack
+## Stack
 
-| Layer      | Technology                                        |
-| ---------- | ------------------------------------------------- |
-| Backend    | Node.js, Express 5, Mongoose 9 (MongoDB ODM)      |
-| Frontend   | React 19, Vite 8, React Router 7, Tailwind CSS 3  |
-| UI / Motion| Framer Motion 13, Recharts 3 (charts)             |
-| HTTP Client| Axios                                             |
-| Auth       | JWT + bcryptjs (password hashing)                 |
-| Uploads    | Multer (disk + in-memory storage)                 |
-| AI         | OpenAI Responses API (food vision model)          |
-| Database   | MongoDB Atlas (cloud)                             |
-| Linting    | Oxlint                                            |
+Backend is Node/Express (v5) with Mongoose (v9) talking to a MongoDB Atlas cluster. Frontend is React 19 on Vite 8, React Router 7, styled with Tailwind 3, animated with Framer Motion, charts via Recharts. Axios for HTTP. Auth is just JWT + bcryptjs, nothing fancy. Uploads go through Multer (disk for post images, in-memory for food photos since those never get saved). The food-photo analysis calls OpenAI's Responses API. Linting is Oxlint because it's fast.
 
-## Project Structure
+## Folder layout
 
 ```
 workout-buddy/
-├── backend/                    # Express REST API
-│   ├── config/
-│   │   └── db.js               # MongoDB connection
-│   ├── controllers/            # Request handlers (auth, workouts, trainers, etc.)
+├── backend/
+│   ├── config/db.js          <- mongo connection
+│   ├── controllers/          <- auth, workouts, trainers, etc
 │   ├── middleware/
-│   │   ├── authMiddleware.js   # JWT `protect` + `admin` guards
-│   │   └── upload.js           # Multer disk + memory upload config
-│   ├── models/                 # Mongoose schemas (6 models)
-│   ├── routes/                 # Express routers (7 route files)
-│   ├── uploads/                # Uploaded post images (served statically)
-│   ├── .env.example            # Environment variable template
-│   ├── seed.js                 # Trainer seeding script
-│   └── index.js                # Server entry point
-└── frontend/                   # React SPA (Vite)
+│   │   ├── authMiddleware.js  (protect + admin guards)
+│   │   └── upload.js          (multer config, disk + memory)
+│   ├── models/                (6 mongoose schemas)
+│   ├── routes/                (7 route files)
+│   ├── uploads/                <- post images live here, served statically
+│   ├── .env.example
+│   ├── seed.js                <- drops in 3 sample trainers
+│   └── index.js
+└── frontend/
     ├── public/
-    ├── src/
-    │   ├── components/         # WorkoutTracker, BookingSystem, NutritionTracker,
-    │   │                       # CommunityFeed, ProfileModal
-    │   ├── constants/
-    │   │   └── workoutPlans.js # Prebuilt workout program templates
-    │   ├── context/
-    │   │   └── AuthContext.jsx # Global auth state + JWT persistence
-    │   ├── pages/              # LandingPage, Auth, Dashboard, AdminPanel
-    │   ├── App.jsx             # Router setup
-    │   └── main.jsx
-    └── index.html
+    └── src/
+        ├── components/   WorkoutTracker, BookingSystem, NutritionTracker, CommunityFeed, ProfileModal
+        ├── constants/workoutPlans.js   <- the 4 built-in programs
+        ├── context/AuthContext.jsx     <- global auth state, persists JWT
+        ├── pages/    LandingPage, Auth, Dashboard, AdminPanel
+        ├── App.jsx
+        └── main.jsx
 ```
 
----
+## Setting it up
 
-## Getting Started
+You'll need a recent Node LTS, a Mongo connection string (Atlas is fine, local works too), and an OpenAI key for the food-photo stuff.
 
-### Prerequisites
-
-- Node.js (modern LTS)
-- MongoDB connection string (Atlas or local)
-- OpenAI API key (for food photo analysis)
-
-### 1. Backend Setup
+**Backend first:**
 
 ```bash
 cd backend
 npm install
-
 cp .env.example .env
-#   then fill in MONGO_URI, JWT_SECRET, OPENAI_API_KEY, OPENAI_FOOD_VISION_MODEL
+# fill in MONGO_URI, JWT_SECRET, OPENAI_API_KEY, OPENAI_FOOD_VISION_MODEL
 
-# Optional: seed sample trainers
-node seed.js
-
-# Start the server
-npm run dev        # development (nodemon, auto-reloads)
-# or
-npm start          # production
+node seed.js       # optional — seeds 3 sample trainers
+npm run dev        # nodemon, auto-reload
+# npm start for prod
 ```
 
-The backend runs on `http://localhost:5000`.
+Runs on `localhost:5000`.
 
-### 2. Frontend Setup
+**Then the frontend:**
 
 ```bash
 cd frontend
@@ -86,215 +60,123 @@ npm install
 npm run dev
 ```
 
-The frontend runs on `http://localhost:5173` (Vite default). It makes API calls to `http://localhost:5000`, so the backend must be running for authenticated features.
+Vite's default port, `localhost:5173`. It calls the backend at `localhost:5000` so keep that running too, or auth stuff won't work.
 
-| Command            | Purpose                          |
-| ------------------ | -------------------------------- |
-| `npm run dev`      | Start Vite dev server            |
-| `npm run build`    | Build production bundle to `dist`|
-| `npm run preview`  | Preview the production build     |
-| `npm run lint`     | Run Oxlint                      |
+Other frontend commands you might want: `npm run build` (prod bundle → `dist`), `npm run preview` (preview that build), `npm run lint` (Oxlint).
 
-### Environment Variables
+### Env vars
 
-| Variable                     | Description                          |
-| ---------------------------- | ------------------------------------ |
-| `PORT`                       | Server port (default `5000`)         |
-| `MONGO_URI`                  | MongoDB connection string            |
-| `JWT_SECRET`                 | Secret used to sign JWTs             |
-| `OPENAI_API_KEY`             | OpenAI API key for food vision       |
-| `OPENAI_FOOD_VISION_MODEL`   | OpenAI model id used for image analysis |
+- `PORT` – server port, defaults to 5000
+- `MONGO_URI` – your mongo connection string
+- `JWT_SECRET` – whatever secret you want signing tokens
+- `OPENAI_API_KEY` – needed for the food vision endpoint
+- `OPENAI_FOOD_VISION_MODEL` – which OpenAI model to hit for image analysis
 
 ---
 
-## API Reference
+## API
 
-Base URL: `http://localhost:5000`
+Everything's under `http://localhost:5000`. ✔ means it needs a Bearer token.
 
-### Authentication — `/api/auth`
+**Auth** — `/api/auth`
+- `POST /register` — sign up, get back a JWT + user
+- `POST /login` — same deal but for existing users
+- `GET /me` ✔ — current user's profile
 
-| Method | Path               | Description                          | Auth |
-| ------ | ------------------ | ------------------------------------ | ---- |
-| POST   | `/api/auth/register` | Register a user, returns JWT + user | Public |
-| POST   | `/api/auth/login`    | Login, returns JWT + user           | Public |
-| GET    | `/api/auth/me`       | Get current user's profile          | ✔ |
+**Workouts** — `/api/workouts`
+- `POST /` ✔ — log one (exercise, sets, reps, weight)
+- `GET /` ✔ — list yours, newest first
+- `DELETE /:id` ✔ — delete, owner only
 
-### Workouts — `/api/workouts`
+**Trainers & bookings** — `/api/trainers`
+- `GET /trainers` — list all trainers (public)
+- `GET /slots?trainerId=X&date=YYYY-MM-DD` ✔ — open slots for a trainer/day
+- `POST /book` ✔ — book a session
+- `GET /my-bookings` ✔ — your bookings
+- `DELETE /bookings/:id` ✔ — cancel, owner only
 
-| Method | Path                 | Description                              | Auth |
-| ------ | -------------------- | ---------------------------------------- | ---- |
-| POST   | `/api/workouts`      | Log a workout (exercise, sets, reps, weight) | ✔ |
-| GET    | `/api/workouts`      | List user's workouts, newest first       | ✔ |
-| DELETE | `/api/workouts/:id`  | Delete a workout (owner only)            | ✔ |
+**Nutrition** — `/api/nutrition`
+- `POST /` ✔ — log one meal manually
+- `GET /` ✔ — today's meals
+- `POST /analyze-image` ✔ — upload a food pic, get AI macro estimates back
+- `POST /batch` ✔ — save 1-8 meals at once (this is what the AI-result confirm step uses)
 
-### Trainers & Bookings — `/api/trainers`
+**Community** — `/api/community`
+- `GET /posts` — everything, newest first (public)
+- `POST /posts` ✔ — new post, image optional
+- `PUT /posts/:id/like` ✔ — toggle like
+- `DELETE /posts/:id` ✔ — owner only
 
-| Method | Path                              | Description                                      | Auth |
-| ------ | --------------------------------- | ------------------------------------------------ | ---- |
-| GET    | `/api/trainers/trainers`          | List all trainers                                | Public |
-| GET    | `/api/trainers/slots`             | Get available slots (`?trainerId=X&date=YYYY-MM-DD`) | ✔ |
-| POST   | `/api/trainers/book`             | Book a session (trainerId, date, slot)           | ✔ |
-| GET    | `/api/trainers/my-bookings`       | List the user's bookings                         | ✔ |
-| DELETE | `/api/trainers/bookings/:id`      | Cancel a booking (owner only)                    | ✔ |
+**Admin** — `/api/admin` (all need admin role on top of a token)
+- `GET /stats` — counts: users, trainers, bookings
+- `GET /users` — every user
+- `GET /trainers` — every trainer
 
-### Nutrition — `/api/nutrition`
+**Users** — `/api/users`
+- `PUT /profile` ✔ — update name/goal/weight/height/phone/gender/injuries/emergencyContact
 
-| Method | Path                         | Description                                        | Auth |
-| ------ | ---------------------------- | -------------------------------------------------- | ---- |
-| POST   | `/api/nutrition`             | Add a single meal (foodName, calories, macros)     | ✔ |
-| GET    | `/api/nutrition`             | Get today's meals for the user                     | ✔ |
-| POST   | `/api/nutrition/analyze-image` | Upload a food photo, get AI-estimated nutrition  | ✔ |
-| POST   | `/api/nutrition/batch`       | Add 1–8 meals at once (used to save AI results)    | ✔ |
-
-### Community — `/api/community`
-
-| Method | Path                           | Description                            | Auth |
-| ------ | ------------------------------ | -------------------------------------- | ---- |
-| GET    | `/api/community/posts`         | Get all posts, newest first            | Public |
-| POST   | `/api/community/posts`         | Create a post (optional image upload)  | ✔ |
-| PUT    | `/api/community/posts/:id/like` | Toggle like/unlike on a post          | ✔ |
-| DELETE | `/api/community/posts/:id`     | Delete a post (owner only)             | ✔ |
-
-### Admin — `/api/admin`
-
-| Method | Path                   | Description                | Auth                        |
-| ------ | ---------------------- | -------------------------- | --------------------------- |
-| GET    | `/api/admin/stats`     | User, trainer, booking counts | ✔ + `admin` role         |
-| GET    | `/api/admin/users`     | List all users             | ✔ + `admin` role            |
-| GET    | `/api/admin/trainers`  | List all trainers          | ✔ + `admin` role            |
-
-### Users — `/api/users`
-
-| Method | Path                  | Description                                     | Auth |
-| ------ | --------------------- | ----------------------------------------------- | ---- |
-| PUT    | `/api/users/profile`  | Update profile (name, goal, weight, height, phone, gender, injuries, emergencyContact) | ✔ |
-
-### Static / Misc
-
-| Method | Path          | Description                                      |
-| ------ | ------------- | ------------------------------------------------ |
-| GET    | `/`           | Status message: "Workout Buddy API is running..." |
-| GET    | `/uploads/*`  | Serves uploaded images from `backend/uploads/`    |
+**Misc**
+- `GET /` — just returns "Workout Buddy API is running..."
+- `GET /uploads/*` — serves whatever's in `backend/uploads/`
 
 ---
 
-## Data Models
+## Data models
 
-### User
-| Field           | Type            | Constraints                        |
-| --------------- | --------------- | ---------------------------------- |
-| `name`          | String          | required                           |
-| `email`         | String          | required, unique                   |
-| `password`      | String          | required (bcrypt-hashed)           |
-| `role`          | String          | default `user`; enum `user`/`trainer`/`admin` |
-| `weight`        | Number          | optional                           |
-| `height`        | Number          | optional                           |
-| `goal`          | String          | optional                           |
-| `phone`         | String          | optional                           |
-| `gender`        | String          | enum `Male`/`Female`/`Other`       |
-| `injuries`      | String          | optional                           |
-| `emergencyContact` | String      | optional                           |
+**User** — name, email (unique), password (hashed), role (`user`/`trainer`/`admin`, defaults to `user`), plus optional weight, height, goal, phone, gender (`Male`/`Female`/`Other`), injuries, emergencyContact.
 
-### Workout
-| Field      | Type     | Constraints             |
-| ---------- | -------- | ----------------------- |
-| `user`     | ObjectId → User | required          |
-| `exercise` | String   | required                |
-| `sets`     | Number   | required                |
-| `reps`     | Number   | required                |
-| `weight`   | Number   | required                |
-| `date`     | Date     | default: now            |
+**Workout** — belongs to a user; exercise, sets, reps, weight all required; date defaults to now.
 
-### Trainer
-| Field          | Type                              | Constraints              |
-| -------------- | --------------------------------- | ------------------------ |
-| `name`         | String                            | required                 |
-| `specialty`    | String                            | required                 |
-| `bio`          | String                            | optional                 |
-| `experience`   | Number (years)                    | optional                 |
-| `profileImage` | String                            | default placeholder      |
-| `availability` | Array of `{ day, slots[] }`       | day enum Monday–Sunday; slots are string times e.g. `"09:00"` |
+**Trainer** — name, specialty required; bio and experience(years) optional; profileImage has a placeholder default; availability is an array of `{ day, slots[] }` where day is Mon–Sun and slots are strings like `"09:00"`.
 
-### Booking
-| Field     | Type            | Constraints               |
-| --------- | --------------- | ------------------------- |
-| `user`    | ObjectId → User | required                  |
-| `trainer` | ObjectId → Trainer | required              |
-| `date`    | String          | required (ISO `YYYY-MM-DD`) |
-| `slot`    | String          | required (e.g. `"10:00"`) |
+**Booking** — user + trainer refs, date as an ISO string (`YYYY-MM-DD`), slot as a string (`"10:00"`).
 
-### Meal
-| Field      | Type            | Constraints       |
-| ---------- | --------------- | ----------------- |
-| `user`     | ObjectId → User | required          |
-| `foodName` | String          | required          |
-| `calories` | Number          | required          |
-| `protein`  | Number          | default 0         |
-| `carbs`    | Number          | default 0         |
-| `fats`     | Number          | default 0         |
-| `date`     | Date            | default: now      |
+**Meal** — belongs to a user; foodName + calories required; protein/carbs/fats default to 0; date defaults to now.
 
-### Post
-| Field      | Type                    | Constraints                     |
-| ---------- | ----------------------- | ------------------------------- |
-| `user`     | ObjectId → User         | required                        |
-| `content`  | String                  | required                        |
-| `image`    | String                  | optional (e.g. `/uploads/x.jpg`)|
-| `likes`    | Array of ObjectId → User| users who liked                 |
-| `comments` | Array of `{ user, text, createdAt }` | nested subdocuments      |
+**Post** — belongs to a user; content required; image optional (path like `/uploads/x.jpg`); likes is an array of user refs; comments is an array of `{ user, text, createdAt }` subdocs.
 
 ---
 
-## Frontend Features
+## What's actually on the frontend
 
-### Pages
-- **`/` — LandingPage** — Animated marketing landing with hero, feature cards, trainers preview, community preview, and call-to-action sections (Framer Motion).
-- **`/auth` — Auth** — Dual-mode login/register form (email + password, or name/email/password/goal). Stores token + user in localStorage.
-- **`/dashboard` — Dashboard** — The authenticated hub. Header with avatar, Admin button (for admin role), and logout. Tabbed interface for the four main features, plus a profile edit modal.
-- **`/admin` — AdminPanel** — Stat cards (members / trainers / bookings), a member directory, and a trainer roster. Requires the `admin` role.
+**Pages:**
+- `/` — landing page, the usual hero/features/trainers-preview/community-preview/CTA sections, animated with Framer Motion
+- `/auth` — one form that switches between login and register
+- `/dashboard` — the main app once you're logged in — header, avatar, admin button if you're an admin, logout, tabs for the four features below, plus a profile modal
+- `/admin` — stat cards, member list, trainer list — admin role required
 
-### Dashboard Tabs / Components
-1. **WorkoutTracker** — Log workouts, view them with delete, pick a quick-start workout plan (from 4 built-in programs), and view a strength progress chart (Recharts).
-2. **BookingSystem** — Browse trainers, pick a date, see available time slots, book, and cancel sessions.
-3. **NutritionTracker** — **Photo Estimate (Beta)**: upload a food photo (≤5MB JPEG/PNG/WebP) → OpenAI analyzes it and returns estimated macros, which you can edit before confirming. Also supports manual meal logging and shows daily calorie/macro totals.
-4. **CommunityFeed** — Create posts with optional images, browse the feed, like/unlike, and delete your own posts.
-5. **ProfileModal** — Edit profile fields (name, phone, goal, gender, weight, height, injuries, emergency contact).
+**The four dashboard tabs:**
 
----
+1. *WorkoutTracker* — log stuff, see your history (with delete), quick-start from one of 4 built-in plans, and a strength progress chart.
+2. *BookingSystem* — pick a trainer, pick a date, see open slots, book, cancel.
+3. *NutritionTracker* — the fun one. "Photo Estimate (Beta)" lets you upload a food pic (5MB max, jpeg/png/webp) and OpenAI guesses the macros, which you can then tweak before saving. Also does plain manual logging and shows daily totals.
+4. *CommunityFeed* — post (with or without an image), scroll the feed, like/unlike, delete your own posts.
 
-## Key Integrations
-
-### OpenAI Food Vision
-- `POST /api/nutrition/analyze-image` sends a base64 food photo + optional portion hint to the OpenAI Responses API using the configured vision model.
-- Uses a strict JSON schema to enforce structured output: 1–8 food items each with `foodName`, `estimatedPortion`, `calories`, `protein`, `carbs`, `fats`, and `confidence` (`low`/`medium`/`high`), plus top-level `notes`.
-- A safety prompt ignores instructions embedded in images, avoids identifying people or medical claims, and instructs conservative macro estimates.
-- Returns 503 if env vars are missing, 502 on AI/validation failures, 429 on rate limiting.
-
-### File Uploads (Multer)
-- **Community post images** → saved to disk in `backend/uploads/` with timestamped filenames, served statically via `/uploads/*`.
-- **Food photos** → kept in memory only (never persisted), passed as base64 directly to OpenAI.
-
-### JWT Authentication
-- Login/register return a 30-day JWT (`workoutBuddyToken`).
-- Protected routes require `Authorization: Bearer <token>`.
-- Admin routes additionally check `role === 'admin'`.
-- Frontend persists the token + user in `localStorage`.
+Plus *ProfileModal* for editing your profile fields.
 
 ---
 
-## Scripts
+## The interesting bits
+
+**Food photo → macros:** `POST /api/nutrition/analyze-image` base64-encodes the photo (plus an optional portion hint) and sends it to OpenAI's Responses API with a strict JSON schema — 1 to 8 food items, each with foodName/estimatedPortion/calories/protein/carbs/fats/confidence (low/med/high), plus a notes field. There's a safety prompt baked in that tells it to ignore any instructions hidden in the image itself, not to identify people, skip medical claims, and lean conservative on estimates. Missing env vars → 503, AI/validation trouble → 502, rate limited → 429.
+
+**Uploads:** post images get written to disk under `backend/uploads/` with a timestamp in the filename and served statically. Food photos never touch disk — they stay in memory just long enough to get base64'd and shipped to OpenAI.
+
+**Auth:** login/register hand back a 30-day JWT (`workoutBuddyToken`). Protected routes want `Authorization: Bearer <token>`. Admin routes also check `role === 'admin'`. Frontend just shoves the token + user into localStorage.
+
+---
+
+## Scripts, all in one place
 
 ```bash
-# Backend
-cd backend
-node seed.js      # Seed 3 sample trainers
-npm run dev       # Start dev server (nodemon)
-npm start         # Start in production mode
+# backend
+node seed.js      # 3 sample trainers
+npm run dev       # nodemon
+npm start         # prod
 
-# Frontend
-cd frontend
-npm run dev       # Vite dev server
-npm run build     # Production build
-npm run preview   # Preview build
-npm run lint      # Run Oxlint
+# frontend
+npm run dev
+npm run build
+npm run preview
+npm run lint
 ```
